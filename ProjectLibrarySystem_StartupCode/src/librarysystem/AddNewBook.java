@@ -34,9 +34,12 @@ public class AddNewBook extends JFrame implements LibWindow{
 	JTable tblAuthor;
 	JScrollPane scrollPane;
 	JPanel pnlAddBook, pnlAuthor, pnlMsg;
-	JLabel lblAddBookTitle, lblBookTitle, lblISBN, lblAuthorFName, lblAuthorLName, lblTelephone, lblAddress, lblStreet, lblCity, lblState, lblZip,lblBio ;
+	JLabel lblAddBookTitle, lblBookTitle, lblISBN, lblAuthorFName, lblAuthorLName, lblTelephone, lblAddress, lblStreet, lblCity, lblState, lblZip,lblBio,lblMsg;
 	JTextField txtTitle, txtAuthor, txtISBN, txtAuthorFName, txtAuthorLName, txtTelephone, txtStreet, txtCity, txtState, txtZip, txtBio;
 	SystemController control = new SystemController();
+	List<Author> lstAuth = new ArrayList<>();
+	Address address;
+	String strAuthorFName, strAuthorLName, strAddress, strTele, strBio, strStreet, strCity,strState,strZip, strISBN, strTitle;
 	Author author;
 	DefaultTableModel model;
 	
@@ -50,29 +53,7 @@ public class AddNewBook extends JFrame implements LibWindow{
 			}
 		});
 	}
-	private void addAuthor() {
-		pnlAuthor = new JPanel();
-		pnlAuthor.setLayout(new BorderLayout());
-		lblAuthorFName  =new JLabel("Author First Name");
-		lblAuthorLName  =new JLabel("Author Last Name");
-		lblTelephone  =new JLabel("Telephone");
-		lblAddress  =new JLabel("Address");
-		lblStreet  =new JLabel("Street");
-		lblCity  = new JLabel("City");
-		lblState = new JLabel("State");
-		lblZip = new JLabel("Zip");
-		
-		txtAuthorFName = new JTextField(11);
-		txtAuthorLName = new JTextField(11);
-		txtTelephone = new JTextField(11);
-		txtStreet = new JTextField(11);
-		txtCity = new JTextField(11);
-		txtState = new JTextField(11);
-		txtZip = new JTextField(11);
-		
-		pnlAuthor.add(lblAuthorFName);
-		
-	}
+	
 	
 	private void addBook() {
 		pnlAddBook = new JPanel();
@@ -110,8 +91,7 @@ public class AddNewBook extends JFrame implements LibWindow{
         tblAuthor = new JTable(model);
         scrollPane = new JScrollPane(tblAuthor);
 		
-		JButton btnAddBook = new JButton("Add Book");
-		btnAddBook.setBounds(140, 166, 100, 24);
+		
 		
 		
 		lblAddBookTitle.setForeground(Color.BLUE.darker());
@@ -132,10 +112,28 @@ public class AddNewBook extends JFrame implements LibWindow{
 		scrollPane.setBounds(40, 160, 400, 100);
 		pnlAddBook.add(scrollPane);
 		
+		
+		JButton btnAddBook = new JButton("Add Book");
+		btnAddBook.setBounds(220, 300, 100, 24);
+		pnlAddBook.add(btnAddBook);
+		//message panel
+		pnlMsg = new JPanel(null);
+		lblMsg = new JLabel("");
+		lblMsg.setBounds(20,40,200,24);
+		btnAddBook.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Book newBook = new Book(txtISBN.getText(),txtTitle.getText(),0,lstAuth);
+				if(newBook != null) {
+					control.addNewBook(newBook);
+					lblMsg.setText("New Book is added to the library collection!");
+				}
+				
+			}
+		});
+		pnlAddBook.add(pnlMsg);
 		add(pnlAddBook);
-		//Author UI components
-		
-		
 		isInitialized(true);
 		
 	}
@@ -212,26 +210,27 @@ public class AddNewBook extends JFrame implements LibWindow{
 			submitButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String strAuthorFName = txtAuthorFName.getText();
-					String strAuthorLName = txtAuthorLName.getText();
-					String strTele = txtTelephone.getText();
-					String strAddr = txtStreet.getText() + txtCity.getText() + txtState.getText() + txtZip.getText();
-					String bio = txtBio.getText();
-					List<Author> lstAuth = new ArrayList<>();
-					Address address = new Address(txtStreet.getText(),txtCity.getText(),txtState.getText(),txtZip.getText());
-					model.addRow(new String[] {strAuthorFName,strAuthorLName,strTele,strAddr,bio});
-					Author anAuthor = new Author(strAuthorFName,strAuthorLName,strTele,address,bio);
-					lstAuth.add(anAuthor);
-					Book newBook = new Book(txtISBN.getText(),txtTitle.getText(),0,lstAuth);
-					control.addNewBook(newBook);
+					strAuthorFName = txtAuthorFName.getText();
+					strAuthorLName = txtAuthorLName.getText();
+					strTele = txtTelephone.getText();
+					strStreet = txtStreet.getText() ;
+					strCity= txtCity.getText();
+					strState = txtState.getText();
+					strZip = txtZip.getText();
+					strAddress = strStreet+ "," + strCity+ "," + strState+ ","+ strZip;
+					strBio = txtBio.getText();
+					address = new Address(strStreet,strCity,strState,strZip);
+    				Author anAuthor = new Author(strAuthorFName,strAuthorLName,strTele,address,strBio);
+    				lstAuth.add(anAuthor);
+					model.addRow(new String[] {strAuthorFName,strAuthorLName,strTele,strAddress,strBio});
 					newWindow.dispose();
 				}
 			});
-			newWindow.setSize(200,100);
-			newWindow.isResizable();
+			newWindow.setSize(500,450);
 			//newWindow.pack();
 			});
 		}
+
 	@SuppressWarnings("unused")
 	private void addNewBookButtonActionListener(JButton butn) {
 		butn.addActionListener(evt -> {
