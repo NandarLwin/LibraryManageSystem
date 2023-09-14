@@ -19,6 +19,10 @@ import javax.swing.JOptionPane;
 import business.ControllerInterface;
 import business.LoginException;
 import business.SystemController;
+import dataaccess.Auth;
+import dataaccess.TestData;
+import dataaccess.User;
+import business.SystemController;
 
 
 public class LoginWindow extends JFrame implements LibWindow {
@@ -43,8 +47,8 @@ public class LoginWindow extends JFrame implements LibWindow {
 	private JLabel label;
 	private JButton loginButton;
 	private JButton logoutButton;
-	
-	
+	SystemController control = new SystemController();
+	User u = null;
 	
 	
 	public boolean isInitialized() {
@@ -59,7 +63,9 @@ public class LoginWindow extends JFrame implements LibWindow {
 	}
 	
 	/* This class is a singleton */
-    private LoginWindow () {}
+    private LoginWindow () {
+    	
+    }
     
     public void init() {     		
     		mainPanel = new JPanel();
@@ -186,7 +192,19 @@ public class LoginWindow extends JFrame implements LibWindow {
     	
     	private void addLoginButtonListener(JButton butn) {
     		butn.addActionListener(evt -> {
-    			JOptionPane.showMessageDialog(this,"Successful Login");
+    			try {
+					control.login(username.getText(),password.getText());
+				} catch (LoginException e) {
+					//e.printStackTrace();
+				}
+    			if(control.currentAuth!=null) {
+    				JOptionPane.showMessageDialog(this,"Successful Login");
+    			}
+    			else {
+    				JOptionPane.showMessageDialog(this, "Unsuccessful Login");
+    			}
+    			//JOptionPane.showMessageDialog(this,"Successful Login");
+    			
     				
     		});
     	}
