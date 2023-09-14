@@ -41,5 +41,11 @@ public class SystemController implements ControllerInterface {
 		return retval;
 	}
 	
+	@Override
+	public void saveNewMember(LibraryMember member) {
+		DataAccess da = new DataAccessFacade();
+		da.saveNewMember(member);
+	}
+	
 	
 }
