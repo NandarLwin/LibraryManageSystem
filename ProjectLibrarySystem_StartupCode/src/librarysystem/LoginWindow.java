@@ -47,6 +47,7 @@ public class LoginWindow extends JFrame implements LibWindow {
 	private JLabel label;
 	private JButton loginButton;
 	private JButton logoutButton;
+	boolean IsloggedIn = false; 
 	SystemController control = new SystemController();
 	User u = null;
 	
@@ -130,7 +131,6 @@ public class LoginWindow extends JFrame implements LibWindow {
     	}
     	
     	
-    	
     	private void defineMiddlePanel() {
     		middlePanel=new JPanel();
     		middlePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -197,13 +197,25 @@ public class LoginWindow extends JFrame implements LibWindow {
 				} catch (LoginException e) {
 					//e.printStackTrace();
 				}
+    		
     			if(control.currentAuth!=null) {
     				JOptionPane.showMessageDialog(this,"Successful Login");
+    				LibrarySystem.hideAllWindows();
+        			LibrarySystem.INSTANCE.setVisible(true);
+        			IsloggedIn = true;
+        			System.out.println(IsloggedIn);
+
+    			}
+    			else if(control.currentAuth== Auth.LIBRARIAN) {
+    				
+    				LibrarySystem.INSTANCE.addNewBook.setEnabled(false);
+
     			}
     			else {
     				JOptionPane.showMessageDialog(this, "Unsuccessful Login");
+    				IsloggedIn = false;
     			}
-    			//JOptionPane.showMessageDialog(this,"Successful Login");
+    			control.currentAuth = null;
     			
     				
     		});

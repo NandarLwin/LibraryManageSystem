@@ -44,7 +44,7 @@ public class AllMemberIdsWindow extends JFrame implements LibWindow {
 	
 	public void defineTopPanel() {
 		topPanel = new JPanel();
-		JLabel AllIDsLabel = new JLabel("All Member IDs");
+		JLabel AllIDsLabel = new JLabel("View Members");
 		Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
 		topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		topPanel.add(AllIDsLabel);
