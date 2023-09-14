@@ -10,13 +10,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
+
+
+
 
 public class Util {
 	public static final Color DARK_BLUE = Color.BLUE.darker();
@@ -78,5 +76,12 @@ public class Util {
 		int frameHeight = f.getSize().height;
 		int frameWidth = f.getSize().width;
 		f.setLocation(((width - frameWidth) / 2), (height - frameHeight) / 3);
+	}
+	
+	public static void addBackButtonListener(JButton butn) {
+		butn.addActionListener(evt -> {
+			LibrarySystem.hideAllWindows();
+			LibrarySystem.INSTANCE.setVisible(true);
+		});
 	}
 }

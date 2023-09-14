@@ -200,18 +200,26 @@ public class LoginWindow extends JFrame implements LibWindow {
     		
     			if(control.currentAuth!=null) {
     				JOptionPane.showMessageDialog(this,"Successful Login");
+    				if(control.currentAuth== Auth.LIBRARIAN) {      				
+        				LibrarySystem.INSTANCE.addNewBook.setEnabled(false);
+        			}
+    				else if(control.currentAuth== Auth.ADMIN) {      				
+        				LibrarySystem.INSTANCE.addNewBook.setEnabled(true);
+        			}
+    				else if(control.currentAuth== Auth.BOTH) {      				
+        				LibrarySystem.INSTANCE.addNewBook.setEnabled(true);
+        			}
+    				
+    				LibrarySystem.INSTANCE.menuBook.setEnabled(true);
     				LibrarySystem.hideAllWindows();
         			LibrarySystem.INSTANCE.setVisible(true);
         			IsloggedIn = true;
-        			System.out.println(IsloggedIn);
+        			
 
     			}
-    			else if(control.currentAuth== Auth.LIBRARIAN) {
-    				
-    				LibrarySystem.INSTANCE.addNewBook.setEnabled(false);
-
-    			}
+    			
     			else {
+    				
     				JOptionPane.showMessageDialog(this, "Unsuccessful Login");
     				IsloggedIn = false;
     			}
